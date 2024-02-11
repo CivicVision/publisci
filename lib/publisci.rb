@@ -29,8 +29,30 @@ def load_folder(folder)
   end
 end
 
-load_folder('publisci/mixins')
-load File.dirname(__FILE__) + '/publisci/parser.rb'
+#load_folder('publisci/mixins')
+module PubliSci
+  autoload :CustomPredicate, 'publisci/mixins/custom_predicate'
+  autoload :Prov, 'publisci/mixins/dereferencable'
+  autoload :Registry, 'publisci/mixins/registry'
+  autoload :Vocabulary, 'publisci/mixins/vocabulary'
+
+  autoload :Dataset, 'publisci/dataset/dataset'
+  autoload :Interactive, 'publisci/dataset/interactive'
+
+  autoload :Metadata, 'publisci/metadata/metadata'
+
+  autoload :DSL, 'publisci/dsl/dsl'
+  #module DSL
+
+  autoload :RDFParser, 'publisci/parser'
+  autoload :Analyzer, 'publisci/analyzer'
+  autoload :Query, 'publisci/query/query_helper'
+
+  autoload :Readers, 'publisci/readers/base'
+
+end
+
+"""
 load File.dirname(__FILE__) + '/publisci/dataset/interactive.rb'
 
 load File.dirname(__FILE__) + '/publisci/dataset/data_cube.rb'
@@ -62,3 +84,4 @@ load_folder('publisci/metadata/prov/model')
 load_folder('publisci/readers')
 load_folder('publisci/writers')
 load_folder('publisci/dataset/ORM')
+"""

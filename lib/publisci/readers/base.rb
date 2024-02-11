@@ -1,5 +1,7 @@
 module PubliSci
   module Readers
+    autoload :CSV, 'publisci/readers/csv'
+    autoload :ARFF, 'publisci/readers/arff'
     module Base
       include PubliSci::Query
       include PubliSci::RDFParser

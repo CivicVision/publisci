@@ -1,5 +1,6 @@
 module PubliSci
   module DSL
+
     attr_reader :base_url
 
     class Instance
