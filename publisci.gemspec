@@ -13,4 +13,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rdf-rdfxml", "~>2"
   s.add_dependency "sparql", "~>2"
   s.add_dependency "json-ld", "~>2"
+  s.add_dependency "rdf-4store", :git => "https://github.com/fumi/rdf-4store.git"
 end

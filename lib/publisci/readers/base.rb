@@ -2,6 +2,11 @@ module PubliSci
   module Readers
     autoload :CSV, 'publisci/readers/csv'
     autoload :ARFF, 'publisci/readers/arff'
+    autoload :MAF, 'publisci/readers/maf'
+    autoload :RCross, 'publisci/readers/r_cross'
+    autoload :RMatrix, 'publisci/readers/r_matrix'
+    autoload :Dataframe, 'publisci/readers/dataframe'
+    autoload :Output, 'publisci/output'
     module Base
       include PubliSci::Query
       include PubliSci::RDFParser

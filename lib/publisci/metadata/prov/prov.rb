@@ -1,6 +1,18 @@
 module PubliSci
   class Prov
     extend PubliSci::Registry
+    autoload :DSL, 'publisci/dsl/prov_dsl'
+    autoload :Configuration, 'publisci/metadata/prov/config'
+    autoload :Usage, 'publisci/metadata/prov/usage'
+    autoload :Element, 'publisci/metadata/prov/element'
+    autoload :Agent, 'publisci/metadata/prov/agent'
+    autoload :Entity, 'publisci/metadata/prov/entity'
+    autoload :Activity, 'publisci/metadata/prov/activity'
+    autoload :Association, 'publisci/metadata/prov/association'
+    autoload :Role, 'publisci/metadata/prov/role'
+    autoload :Derivation, 'publisci/metadata/prov/derivation'
+    autoload :Model, 'publisci/metadata/prov/model/prov_models'
+    autoload :Dereferencable, 'publisci/mixins/dereferencable'
 
     def self.configuration
       @config ||= Configuration.new

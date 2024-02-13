@@ -1,5 +1,6 @@
 module PubliSci
   module Writers
+    autoload :Dataframe, 'publisci/writers/dataframe'
     class Base
       include PubliSci::Query
       include PubliSci::RDFParser

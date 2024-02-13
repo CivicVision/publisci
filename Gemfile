@@ -7,9 +7,7 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   gem "rspec", "~> 2.8.0"
-  gem "rdoc", "~> 3.12"
   gem "cucumber", ">= 0"
-  gem "jeweler", "~> 1.8.4", :git => "https://github.com/technicalpickles/jeweler.git"
   gem "bundler", ">= 1.0.21"
   gem "bio", ">= 1.4.2"
   gem "rdoc", "~> 3.12"
@@ -18,12 +16,12 @@ end
 
 gem 'rest-client'
 
-gem 'rdf'
+gem 'rdf', "~>2.2"
 gem 'rdf-4store', :git => "https://github.com/fumi/rdf-4store.git"
-gem 'rdf-turtle'
-gem 'rdf-rdfxml'
+gem 'rdf-turtle', "~>2"
+gem 'rdf-rdfxml', "~>2"
 gem 'json-ld'
 gem 'rserve-client'
 gem 'sparql'
 
-gem "spira", git: "https://github.com/ruby-rdf/spira.git"
+gem "spira", "~>2"

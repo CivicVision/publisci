@@ -20,68 +20,25 @@ rescue LoadError
 	puts "can't load spira; orm unavailable"
 end
 
-def load_folder(folder)
-	Dir.foreach(File.dirname(__FILE__) + "/#{folder}") do |file|
-		unless file == "." or file == ".."
-			f = File.dirname(__FILE__) + "/#{folder}/" + file
-      load f unless File.directory?(f)
-		end
-  end
-end
-
-#load_folder('publisci/mixins')
 module PubliSci
   autoload :CustomPredicate, 'publisci/mixins/custom_predicate'
-  autoload :Prov, 'publisci/mixins/dereferencable'
   autoload :Registry, 'publisci/mixins/registry'
   autoload :Vocabulary, 'publisci/mixins/vocabulary'
 
   autoload :Dataset, 'publisci/dataset/dataset'
   autoload :Interactive, 'publisci/dataset/interactive'
 
+  autoload :Prov, 'publisci/metadata/prov/prov'
+
   autoload :Metadata, 'publisci/metadata/metadata'
 
   autoload :DSL, 'publisci/dsl/dsl'
-  #module DSL
 
   autoload :RDFParser, 'publisci/parser'
   autoload :Analyzer, 'publisci/analyzer'
   autoload :Query, 'publisci/query/query_helper'
 
   autoload :Readers, 'publisci/readers/base'
+  autoload :Writers, 'publisci/writers/base'
 
 end
-
-"""
-load File.dirname(__FILE__) + '/publisci/dataset/interactive.rb'
-
-load File.dirname(__FILE__) + '/publisci/dataset/data_cube.rb'
-load File.dirname(__FILE__) + '/publisci/dataset/dataset_for.rb'
-load File.dirname(__FILE__) + '/publisci/dataset/configuration.rb'
-load File.dirname(__FILE__) + '/publisci/dataset/dataset.rb'
-
-load File.dirname(__FILE__) + '/publisci/generators/base.rb'
-load File.dirname(__FILE__) + '/publisci/parsers/base.rb'
-load_folder('publisci/parsers')
-load_folder('publisci/generators')
-
-load File.dirname(__FILE__) + '/publisci/query/query_helper.rb'
-load File.dirname(__FILE__) + '/publisci/post_processor.rb'
-load File.dirname(__FILE__) + '/publisci/analyzer.rb'
-load File.dirname(__FILE__) + '/publisci/store.rb'
-load File.dirname(__FILE__) + '/publisci/datacube_model.rb'
-load File.dirname(__FILE__) + '/publisci/output.rb'
-load File.dirname(__FILE__) + '/publisci/metadata/prov/element.rb'
-load File.dirname(__FILE__) + '/publisci/metadata/prov/prov.rb'
-load File.dirname(__FILE__) + '/publisci/writers/base.rb'
-load File.dirname(__FILE__) + '/publisci/readers/base.rb'
-
-
-load_folder('publisci/dsl')
-load_folder('publisci/metadata')
-load_folder('publisci/metadata/prov')
-load_folder('publisci/metadata/prov/model')
-load_folder('publisci/readers')
-load_folder('publisci/writers')
-load_folder('publisci/dataset/ORM')
-"""
