@@ -1,4 +1,6 @@
   #monkey patch to make rdf string w/ heredocs prettier ;)
+require 'uri'
+
 class String
   def unindent
     gsub /^#{self[/\A\s*/]}/, ''
@@ -177,9 +179,10 @@ module PubliSci
         specs = []
 
           rdf_dimensions.each_with_index.map{|d,i|
+          # only strip URI if it's a URI otherwise label should be the original string
           specs << <<-EOF.unindent
             #{cs_dims[i]} a qb:ComponentSpecification ;
-              rdfs:label "#{strip_prefixes(strip_uri(dimension_names[i]))}" ;
+              rdfs:label "#{strip_prefixes(strip_uri_if_needed(dimension_names[i]))}" ;
               qb:dimension #{d} .
 
             EOF
@@ -188,7 +191,7 @@ module PubliSci
           rdf_measures.each_with_index.map{|n,i|
             specs << <<-EOF.unindent
               #{cs_meas[i]} a qb:ComponentSpecification ;
-                rdfs:label "#{strip_prefixes(strip_uri(measure_names[i]))}" ;
+                rdfs:label "#{strip_prefixes(strip_uri_if_needed(measure_names[i]))}" ;
                 qb:measure #{n} .
 
               EOF
@@ -215,19 +218,21 @@ module PubliSci
           if dimension_codes.include?(dimensions[i])
 
             code = rdf_codes[dimension_codes.index(dimensions[i])]
+          # only strip URI if it's a URI otherwise label should be the original string
             props << <<-EOF.unindent
             #{d} a rdf:Property, qb:DimensionProperty ;
-              rdfs:label "#{strip_prefixes(strip_uri(d))}"@#{lang} ;
+              rdfs:label "#{strip_prefixes(strip_uri_if_needed(d))}"@#{lang} ;
               qb:codeList #{code[1]} ;
               rdfs:range #{code[2]} .
 
             EOF
           else
+          # only strip URI if it's a URI otherwise label should be the original string
             props << <<-EOF.unindent
             #{d} a rdf:Property, qb:DimensionProperty ;
-              rdfs:label "#{strip_prefixes(strip_uri(d))}"@#{lang} ;
+              rdfs:label "#{strip_prefixes(strip_uri_if_needed(d))}"@#{lang} ;
             EOF
-            if options[:ranges] && options[:ranges][dimension[i]]
+            if options[:ranges] && options[:ranges][dimensions[i]]
               props.last << "\n  rdfs:range #{options[:ranges][dimensions[i]]} .\n\n"
             else
               props.last[-2] = ".\n"
@@ -238,6 +243,17 @@ module PubliSci
         props
       end
 
+      def strip_uri_if_needed(m)
+        if m =~ /^https?:\/\//
+          m = strip_uri(m)
+          puts(m)
+        elsif m =~ /^[a-zA-z]+:[a-zA-z]+$/
+          m = strip_uri(m)
+          puts(m)
+        end
+        m
+      end
+
       def measure_properties(measures, var, options={})
         options = defaults().merge(options)
         lang = options[:lang] || "en"
@@ -246,9 +262,10 @@ module PubliSci
 
         rdf_measures.each_with_index{ |m,i|
 
+          # only strip URI if it's a URI otherwise label should be the original string
           props <<  <<-EOF.unindent
           #{m} a rdf:Property, qb:MeasureProperty ;
-            rdfs:label "#{strip_prefixes(strip_uri(m))}"@#{lang} ;
+            rdfs:label "#{strip_prefixes(strip_uri_if_needed(m))}"@#{lang} ;
           EOF
 
           if options[:ranges] && options[:ranges][measures[i]]
@@ -367,7 +384,7 @@ module PubliSci
 
             #{code[1]} a skos:ConceptScheme;
               skos:prefLabel "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist scheme"@#{lang};
-              rdfs:label "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist scheme"@#{lang};
+              rdfs:label "Code list for #{strip_prefixes(strip_uri_if_needed(code[1]))} - codelist scheme"@#{lang};
               skos:notation "CL_#{strip_prefixes(strip_uri(code[1])).upcase}";
               skos:note "Specifies the #{strip_prefixes(strip_uri(code[1]))} for each observation";
           EOF
@@ -397,10 +414,11 @@ module PubliSci
           end
           data[refcode].uniq.each_with_index{|value,i|
             unless value == nil && !options[:encode_nulls]
+            # only strip URI if it's a URI otherwise label should be the original string
             concepts << <<-EOF.unindent
               #{to_resource(value,options)} a skos:Concept, #{code[2]};
                 skos:topConceptOf #{code[1]} ;
-                skos:prefLabel "#{strip_uri(value)}" ;
+                skos:prefLabel "#{strip_uri_if_needed(value)}" ;
                 skos:inScheme #{code[1]} .
 
             EOF
