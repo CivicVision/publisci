@@ -70,7 +70,7 @@ module PubliSci
         data.map{|k,v|
           if codes.include? k
             new_data[k] = v.map{|val|
-              if val =~ /^http:\/\//
+              if val =~ /^https?:\/\//
                 "<#{val}>"
               elsif val =~ /^[a-zA-z]+:[a-zA-z]+$/
                 val
