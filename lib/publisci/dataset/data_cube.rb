@@ -160,9 +160,10 @@ module PubliSci
       def dataset(var,options={})
         var = sanitize([var]).first
         options = defaults().merge(options)
+        lang = options[:lang] || "en"
         <<-EOF.unindent
         ns:dataset-#{var} a qb:DataSet ;
-          rdfs:label "#{var}"@en ;
+          rdfs:label "#{var}"@#{lang} ;
           qb:structure ns:dsd-#{var} .
 
         EOF
@@ -198,6 +199,7 @@ module PubliSci
 
       def dimension_properties(dimensions, codes, var, options={})
         options = defaults().merge(options)
+        lang = options[:lang] || "en"
         rdf_measures, rdf_dimensions, rdf_codes  = generate_resources([], dimensions, codes, options)
         props = []
 
@@ -215,7 +217,7 @@ module PubliSci
             code = rdf_codes[dimension_codes.index(dimensions[i])]
             props << <<-EOF.unindent
             #{d} a rdf:Property, qb:DimensionProperty ;
-              rdfs:label "#{strip_prefixes(strip_uri(d))}"@en ;
+              rdfs:label "#{strip_prefixes(strip_uri(d))}"@#{lang} ;
               qb:codeList #{code[1]} ;
               rdfs:range #{code[2]} .
 
@@ -223,7 +225,7 @@ module PubliSci
           else
             props << <<-EOF.unindent
             #{d} a rdf:Property, qb:DimensionProperty ;
-              rdfs:label "#{strip_prefixes(strip_uri(d))}"@en ;
+              rdfs:label "#{strip_prefixes(strip_uri(d))}"@#{lang} ;
             EOF
             if options[:ranges] && options[:ranges][dimension[i]]
               props.last << "\n  rdfs:range #{options[:ranges][dimensions[i]]} .\n\n"
@@ -238,6 +240,7 @@ module PubliSci
 
       def measure_properties(measures, var, options={})
         options = defaults().merge(options)
+        lang = options[:lang] || "en"
         rdf_measures = generate_resources(measures, [], [], options)[0]
         props = []
 
@@ -245,7 +248,7 @@ module PubliSci
 
           props <<  <<-EOF.unindent
           #{m} a rdf:Property, qb:MeasureProperty ;
-            rdfs:label "#{strip_prefixes(strip_uri(m))}"@en ;
+            rdfs:label "#{strip_prefixes(strip_uri(m))}"@#{lang} ;
           EOF
 
           if options[:ranges] && options[:ranges][measures[i]]
@@ -345,6 +348,7 @@ module PubliSci
 
       def code_lists(codes, data, var, options={})
         options = defaults().merge(options)
+        lang = options[:lang] || "en"
         rdf_measures, rdf_dimensions, rdf_codes  = generate_resources([], [], codes, options)
         data = encode_data(codes, data, var, options)
         lists = []
@@ -357,13 +361,13 @@ module PubliSci
           str = <<-EOF.unindent
             #{code[2]} a rdfs:Class, owl:Class;
               rdfs:subClassOf skos:Concept ;
-              rdfs:label "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist class"@en;
+              rdfs:label "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist class"@#{lang};
               rdfs:comment "Specifies the #{strip_prefixes(strip_uri(code[1]))} for each observation";
               rdfs:seeAlso #{code[1]} .
 
             #{code[1]} a skos:ConceptScheme;
-              skos:prefLabel "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist scheme"@en;
-              rdfs:label "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist scheme"@en;
+              skos:prefLabel "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist scheme"@#{lang};
+              rdfs:label "Code list for #{strip_prefixes(strip_uri(code[1]))} - codelist scheme"@#{lang};
               skos:notation "CL_#{strip_prefixes(strip_uri(code[1])).upcase}";
               skos:note "Specifies the #{strip_prefixes(strip_uri(code[1]))} for each observation";
           EOF
