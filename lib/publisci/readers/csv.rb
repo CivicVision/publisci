@@ -40,7 +40,8 @@ module PubliSci
       end
 
 			def generate_n3(file, dataset_name, options={})
-				@data = ::CSV.read(file)
+				csv_options = options['csv'] || {}
+				@data = ::CSV.read(file, **csv_options)
 				@options = options
 				generate(measures, dimensions, codes, observation_data, observation_labels, dataset_name, options)
 			end
