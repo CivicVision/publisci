@@ -31,6 +31,7 @@ data do
 
   # set parser specific options
   option 'label_column', 'producer'
+  option :codes, { producer: ["producer1", "producer2"] }
 end
 
 # Describe dataset
@@ -53,6 +54,21 @@ PubliSci::QueryHelper.execute('select * where {?s ?p ?o} limit 5', repo)
 PubliSci::Writers::ARFF.new.from_store(repo)
 ```
 
+```ruby
+  option 'label_column', 'producer'
+```
+will use the content of the column producer as labels for the observations otherwise 1-n
+
+
+```ttl
+ns:obsLabel a qb:Observation ;
+rdfs:label "Label" ;
+```
+or
+```ttl
+ns:obs1 a qb:Observation ;
+rdfs:label "1" ;
+```
 
 #### Gem executable
 
